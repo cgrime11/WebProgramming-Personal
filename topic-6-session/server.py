@@ -1,8 +1,8 @@
-from bottle import route, run, template, get, post, request, response, redirect, os
+from bottle import route, run, template, get, post, request, response, redirect
 #http://localhost:8068/....<route>
-import json, random, string
+import json, random, string, os
 
-def new_user():
+def new_user(username):
     user={
         "username":username,
     }
@@ -18,7 +18,7 @@ def load_user(username):
             user=json.load(f)
     except Exception as e:
         print("user error",e)
-        user=new_user()
+        user=new_user(username)
     return user
 
 def save_user(user):
@@ -56,6 +56,8 @@ def load_session(request):
 
 def save_session(session, response):
     session_id=session['session_id']
+    if 'user' in session:
+        save_user(session['user'])
     os.makedirs("data/sessions", exist_ok=True)
     with open(f"data/sessions/{session_id}.session", 'w') as f:
         json.dump(session, f)
@@ -82,8 +84,8 @@ def get_login():
 @post("/login")
 def post_login():
     session=load_session(request)
-    username=request.forms.get['username']
-    favcolor=request.forms.get["color"]
+    username=request.forms['username']
+    favcolor=request.forms["favcolor"]
     session['favcolor']=favcolor
     session['username']=username
     #password=request.forms['password']
@@ -91,6 +93,8 @@ def post_login():
         #save_session(response)
         #redirect("/login")
         #return template("login", message="bad password")
+    session['user'] = load_user(username)
+    session['user']['favcolor'] = favcolor
     save_session(session, response)
     redirect("/hello")
 

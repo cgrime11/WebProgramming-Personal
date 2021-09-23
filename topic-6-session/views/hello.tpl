@@ -1,6 +1,6 @@
 <html>
 <body>
 <h2> Hello, {{name.upper()}}!</h2>
-Your favorite color is {{favcolor}}!
+Your favorite color is {{color}}!
 </body>
 </html>

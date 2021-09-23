@@ -15,7 +15,7 @@ def str_to_bytes(s):
     assert type(b) is bytes
     return b
 
-def generate_cred(password):
+def generate_credentials(password):
     salt=os.urandom(32)
     key= hashlib.pbkdf2_hmac("sha256", password.encode("utf-8"), salt, 100000)
     return{
@@ -26,11 +26,11 @@ def generate_cred(password):
 def save_password(username,password):
     global passwords
     passwords[username]=password[::-1]
-    credentials=generate_cred(password)
+    credentials=generate_credentials(password)
     print(credentials)
 
 def verify_password(username,password):
-    global the_password 
+    global passwords
     if username not in passwords:
         return False
     return passwords[username]==password[::-1]
