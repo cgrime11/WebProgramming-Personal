@@ -13,6 +13,9 @@
         <td><h3> Password<h3/><td/>
         <td><input type="password" name="password"/><td/>
         <tr/>
+        <td><h3> Favorite Color<h3/><td/>
+        <td><input type="text" name="color"/><td/>
+        <tr/>
     <table/>
     <input type="submit" value="Submit"/>
 </form>
