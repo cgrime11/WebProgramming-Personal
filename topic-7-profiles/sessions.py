@@ -1,15 +1,10 @@
-from bottle import run, template, default_app
-from bottle import get, post 
-from bottle import debug
-from bottle import request, response, redirect
-
-# http://localhost:8068/.... <route> 
-
-#######
+# sessions.py
+ 
 import os 
 import json
 import random
 import string
+from bottle import request, response
 
 def random_id():
     characters = string.ascii_lowercase + string.digits
@@ -45,39 +40,3 @@ def save_session(session, response):
         json.dump(session, f)
     response.set_cookie('session_id',session_id)
     print('saved session', session)
-
-#######
-
-@get('/')
-@get('/hello')
-def get_hello(name=None):
-    session = load_session(request)
-    print('hello loaded session',session)
-    if 'username' in session:
-        username = session['username']
-    else:
-        username = 'complete stranger'
-    username = session.get('username','complete stranger')
-    favcolor = session.get('favcolor','not known')
-    print('saving loaded session',session)
-    save_session(session, response)
-    return template('hello', name=username, color=favcolor)
-
-@get('/login')
-def get_login():
-    session = load_session(request)
-    save_session(session, response)
-    return template('login', message='')
-
-@post('/login')
-def post_login():
-    session = load_session(request)
-    username = request.forms['username']
-    favcolor = request.forms['favcolor']
-    session['favcolor'] = favcolor
-    session['username'] = username
-    save_session(session, response)
-    redirect('/hello')
-
-debug(True)
-run(host='localhost', port=8068, reloader=True)
