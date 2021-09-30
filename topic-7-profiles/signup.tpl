@@ -19,6 +19,8 @@
         <tr/>
     <table/>
     <input type="submit" value="Submit"/>
+    <hr>
+    <a href="/login",">If you have an account, you can login up here</a>
 </form>
 </body>
 </html>

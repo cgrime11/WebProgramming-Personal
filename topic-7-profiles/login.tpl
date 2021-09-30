@@ -18,6 +18,8 @@
         <tr/>
     <table/>
     <input type="submit" value="Submit"/>
+    <hr>
+    <a href="/signup",">If you need a new account, you can sign up here</a>
 </form>
 </body>
 </html>

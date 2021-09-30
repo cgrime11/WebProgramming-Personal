@@ -7,13 +7,44 @@ from sessions import load_session, save_session
 
 #####
 
-import os 
+import os , codecs, random
 import json
 
-def new_profile(username):
+
+import hashlib, codecs, os, random
+
+passwords={
+
+}
+
+def bytes_to_str(b):
+    s=str(codecs.encode(b, "hex"), "utf-8")
+    assert type(s) is str
+    return s
+
+def str_to_bytes(s):
+    b=codecs.decode(bytes(s, "utf-8"), "hex")
+    assert type(b) is bytes
+    return b
+
+def encode_password(password):
+    salt=os.urandom(32)
+    key= hashlib.pbkdf2_hmac("sha256", password.encode("utf-8"), salt, 100000)
+    salt= bytes_to_str(salt)
+    key= bytes_to_str(key)
+    return f'{salt}:{key}'
+
+def verify_password(password, encoding):
+    salt, saved_key = encoding.split(':')
+    salt= str_to_bytes(salt)
+    password_key= hashlib.pbkdf2_hmac("sha256", password.encode("utf-8"), salt, 100000)
+    password_key= bytes_to_str(password_key)
+    return saved_key == password_key
+
+def new_profile(username, password):
     profile = {
         'username' : username,
-        'password' : 'no_password'
+        'password' : password
     }
     os.makedirs('data/profiles', exist_ok=True)
     with open(f'data/profiles/{username}.profile','w') as f:
@@ -27,11 +58,13 @@ def load_profile(username):
             profile = json.load(f)
     except Exception as e:
         print(f'Profile error:{e}')
-        profile = new_profile(username)
+        profile = {}
     print('loaded profile = ',profile)
     return profile
 
 def save_profile(profile):
+    if 'username' not in profile:
+        return
     username = profile['username']
     if username == 'guest':
         return
@@ -46,6 +79,9 @@ def not_logged_in(session):
         return True
     if session['username'] == 'guest':
         return True
+
+def logged_in(session):
+    return 'username' in session and session['username'] != 'guest'
 
 @get('/')
 @get('/hello')
@@ -93,18 +129,22 @@ def post_signup():
     print('signup starting ',profile)
 
     # see if it's an established profile
-    if profile['password'] != 'no_password':
+    if 'username' in profile:
         print("ALREADY A CUSTOMER")
         save_session(session, response)
-        redirect('/login')
+        redirect('/signup')
 
-    # finish the login
-    profile['password'] = password
+    # save the profile
+    profile['username'] = username
+    profile['password'] = encode_password(password)
+    profile['encoding'] = encode_password(password)
     session['username'] = username
 
-    # save_profile(profile)
+    # ssave the session
     save_profile(profile)
     save_session(session, response)
+
+    #assume signup includes login
     redirect('/hello')
 
 @get('/login')
@@ -128,9 +168,9 @@ def post_login():
     profile = load_profile(username)
     print("loaded profile",profile)
     print('password',password)
-    if profile['password'] != password:
+    if not verify_password(password, profile.get('encoding','')):
         save_session(session, response)
-        redirect('/hello')
+        redirect('/login')
 
     print("logged in")
 
