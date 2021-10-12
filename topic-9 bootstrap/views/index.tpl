@@ -1,7 +1,10 @@
+<!DOCTYPE html>
 <html>
 %include header
 <body>
-<h2> Hello, {{name.upper()}}!</h2>
+<div class="container">
+<h2>Hello, {{name}}!</h2>
 Your favorite color is {{color}}!
+<div>
 </body>
 </html>
