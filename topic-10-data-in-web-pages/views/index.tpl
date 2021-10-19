@@ -26,6 +26,6 @@
 % end
 </table>
 <hr/>
-<a href="/create_note">Create a new note...</a>
+<a href="/create">Create a new note...</a>
 </body>
 </html>

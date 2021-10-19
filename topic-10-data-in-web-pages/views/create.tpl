@@ -2,7 +2,7 @@
 <body>
 <h1>Create</h1>
 <h2>New item for {{name}}...</h2>
-<form action="/create_note" method="post">
+<form action="/create" method="post">
   <hr/>
   <table>
     <tr>
