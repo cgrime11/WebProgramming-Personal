@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<body>
+    <H1>Pizza Order Types</H1>
+    <div id="chart"></div>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript">
+        google.charts.load('current', {'packages':['corechart']});
+        google.charts.setOnLoadCallback(drawChart);
+
+        function drawChart() {
+          var data = google.visualization.arrayToDataTable([
+              ['Pizza','Quantity'],
+              ['Supreme',114],
+              ['Cheese',35],
+              ['Pepperoni',74],
+              ['Anchovy',4],
+              ['Hawaiian',20]
+            ]);    
+
+          var options = {'width':800, 'height':800, 'title':'Pizza Orders'};
+          var chart = new google.visualization.PieChart(document.getElementById('chart'));
+          chart.draw(data, options);
+        }    
+    </script>
+</body>
+
+</html>
