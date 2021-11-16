@@ -1,0 +1,44 @@
+{
+    "coord": {
+        "lon": -81.7374,
+        "lat": 41.0384
+    },
+    "weather": [
+        {
+            "id": 804,
+            "main": "Clouds",
+            "description": "overcast clouds",
+            "icon": "04n"
+        }
+    ],
+    "base": "stations",
+    "main": {
+        "temp": 280.86,
+        "feels_like": 279.47,
+        "temp_min": 277.81,
+        "temp_max": 283.09,
+        "pressure": 1020,
+        "humidity": 66
+    },
+    "visibility": 10000,
+    "wind": {
+        "speed": 2.24,
+        "deg": 112,
+        "gust": 3.58
+    },
+    "clouds": {
+        "all": 100
+    },
+    "dt": 1636595903,
+    "sys": {
+        "type": 2,
+        "id": 2003533,
+        "country": "US",
+        "sunrise": 1636546137,
+        "sunset": 1636582378
+    },
+    "timezone": -18000,
+    "id": 0,
+    "name": "Wadsworth",
+    "cod": 200
+}
